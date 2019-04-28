@@ -7,23 +7,10 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 
 import SheetTools
 from LoginPage import LoginPage
+from SignupPage import SignupPage
+from HomePage import HomePage
 
 kivy.require("1.10.1")
-
-
-class InfoPage(GridLayout):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.cols = 1
-        self.message = Label(halign="center", valign="middle", font_size=30)
-        self.message.bind(width=self.update_text_width)
-        self.add_widget(self.message)
-
-    def update_info(self, message):
-        self.message.text = message
-
-    def update_text_width(self, *_):
-        self.message.text_size = (self.message.width*.9, None)
 
 
 class KTrackerApp(App):
@@ -35,9 +22,14 @@ class KTrackerApp(App):
         screen.add_widget(self.login_page)
         self.screen_manager.add_widget(screen)
 
-        self.info_page = InfoPage()
-        screen = Screen(name="Info")
-        screen.add_widget(self.info_page)
+        self.signup_page = SignupPage(self)
+        screen = Screen(name="Signup")
+        screen.add_widget(self.signup_page)
+        self.screen_manager.add_widget(screen)
+
+        self.home_page = HomePage(self)
+        screen = Screen(name="Home")
+        screen.add_widget(self.home_page)
         self.screen_manager.add_widget(screen)
 
         return self.screen_manager

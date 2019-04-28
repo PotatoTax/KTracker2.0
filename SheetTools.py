@@ -130,7 +130,7 @@ def add_user(username, password1, password):
     try:  # If the user exists, does nothing
         get_user_data(username)
         return 1
-    except ValueError:
+    except gspread.exceptions.WorksheetNotFound:
         if password == password1:  # Checks if the passwords match
             database = open_database()
             database.add_worksheet(

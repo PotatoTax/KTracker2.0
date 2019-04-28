@@ -33,11 +33,16 @@ class LoginPage(GridLayout):
         self.password = TextInput(text=prev_password, multiline=False)
         self.add_widget(self.password)
 
-        self.add_widget(Label())
+        self.signup = Button(text="Sign Up")
+        self.signup.bind(on_press=self.goto_signup)
+        self.add_widget(self.signup)
 
         self.login = Button(text="Login")
         self.login.bind(on_press=self.login_button)
         self.add_widget(self.login)
+
+    def goto_signup(self, instance):
+        self.main_app.screen_manager.current = "Signup"
 
     def login_button(self, instance):
         username = self.username.text
@@ -54,8 +59,7 @@ class LoginPage(GridLayout):
                 print("Valid Credentials")
                 with open("saved_creds.txt", "w") as f:
                     f.write(f"{username},{password}")
-                self.main_app.info_page.update_info(f"Welcome, {username}, {password}")
-                self.main_app.screen_manager.current = "Info"
+                self.main_app.screen_manager.current = "Home"
             else:
                 print("Invalid Credentials")
         except gspread.exceptions.WorksheetNotFound:
