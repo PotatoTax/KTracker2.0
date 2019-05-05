@@ -59,7 +59,11 @@ class LoginPage(GridLayout):
                 print("Valid Credentials")
                 with open("saved_creds.txt", "w") as f:
                     f.write(f"{username},{password}")
+                self.main_app.load_user_data()
+                self.main_app.user_data = {'Username': username}
+                self.main_app.secondary_build()
                 self.main_app.screen_manager.current = "Home"
+
             else:
                 print("Invalid Credentials")
         except gspread.exceptions.WorksheetNotFound:
