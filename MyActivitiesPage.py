@@ -34,7 +34,7 @@ class MyActivitiesPage(GridLayout):
         self.search = GridLayout(cols=3, size_hint_y=.1)
         self.search.keywords = TextInput(multiline=False, size_hint_x=.4)
         self.search.add_widget(self.search.keywords)
-        self.search.type = Spinner(text='Select Sport', values=('All', 'Run', 'Bike', 'Swim'), size_hint_x=.4)
+        self.search.type = Spinner(text='Select Sport', values=('All', 'Run', 'Bike'), size_hint_x=.4)
         self.search.type.bind(text=self.sport_filter)
         self.search.add_widget(self.search.type)
         self.search.search = Button(text="Search", size_hint_x=.2)
@@ -118,7 +118,6 @@ class MyActivitiesPage(GridLayout):
             "All": "All",
             "Run": "Run",
             "Bike": "Ride",
-            "Swim": "Swim"
         }
         type = translator[text]
         if type == "All":

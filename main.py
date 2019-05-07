@@ -10,6 +10,7 @@ from LoginPage import LoginPage
 from SignupPage import SignupPage
 import HomePage
 import MyActivitiesPage
+import TrainingLogPage
 from ActivityDataObject import ActivityData
 kivy.require("1.10.1")
 
@@ -45,6 +46,11 @@ class KTrackerApp(App):
         self.my_activities_page = MyActivitiesPage.PageParent(self)
         screen = Screen(name="My Activities")
         screen.add_widget(self.my_activities_page)
+        self.screen_manager.add_widget(screen)
+
+        self.training_log_page = TrainingLogPage.PageParent(self)
+        screen = Screen(name="Training Log")
+        screen.add_widget(self.training_log_page)
         self.screen_manager.add_widget(screen)
 
     def load_user_data(self):
