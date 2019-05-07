@@ -27,6 +27,8 @@ class MyActivitiesPage(GridLayout):
         super().__init__(**kwargs)
         self.main_app = main_app
         self.activity_list = self.main_app.activity_data.activity_list
+        self.filtered_list = self.activity_list
+        self.num_activities = 10
 
         self.cols = 1
         self.header = GridLayout(cols=2, size_hint_y=.15)
@@ -37,32 +39,36 @@ class MyActivitiesPage(GridLayout):
         self.search = GridLayout(cols=3, size_hint_y=.1)
         self.search.keywords = TextInput(multiline=False, size_hint_x=.4)
         self.search.add_widget(self.search.keywords)
-        self.search.search = Button(text="Search", size_hint_x=.2)
-        self.search.search.bind(on_press=self.filter)
-        self.search.add_widget(self.search.search)
         self.search.type = Spinner(text='Select Sport', values=('All', 'Run', 'Bike', 'Swim'), size_hint_x=.4)
-        self.search.type.bind(text=lambda e: self.filter_sport)
+        self.search.type.bind(text=self.sport_filter)
         self.search.add_widget(self.search.type)
+        self.search.search = Button(text="Search", size_hint_x=.2)
+        self.search.search.bind(on_press=lambda e: self.filter())
+        self.search.add_widget(self.search.search)
         self.add_widget(self.search)
 
-        self.activity_viewer = GridLayout(cols=1, rows=10)
-        self.activity_viewer.header = GridLayout(cols=5)
+        self.activity_viewer = GridLayout(cols=1, rows=2)
+        self.activity_viewer.header = GridLayout(cols=5, size_hint_y=.1)
         self.activity_viewer.header.add_widget(Label(text="Sport", size_hint_x=.17))
         self.activity_viewer.header.add_widget(Label(text="Date", size_hint_x=.17))
         self.activity_viewer.header.add_widget(Label(text="Title"))
         self.activity_viewer.header.add_widget(Label(text="Time", size_hint_x=.17))
         self.activity_viewer.header.add_widget(Label(text="Distance", size_hint_x=.17))
         self.activity_viewer.add_widget(self.activity_viewer.header)
+        self.activity_viewer.body = GridLayout(cols=1, rows=self.num_activities)
+        self.activity_viewer.add_widget(self.activity_viewer.body)
 
         self.show_activities()
         self.add_widget(self.activity_viewer)
 
     def show_activities(self):
-        for i in range(9):
+        self.activity_viewer.body.clear_widgets()
+
+        for i in range(self.num_activities):
             self.months = {1: 'January', 2: 'Febuary', 3: 'March', 4: 'April', 5: 'May',
                            6: 'June', 7: 'July', 8: 'August', 9: 'September', 10: 'October', 11: 'November',
                            12: 'December'}
-            activity = self.activity_list[i]
+            activity = self.filtered_list[i]
             row = GridLayout(cols=5)
 
             row.add_widget(Label(text=activity['Type'], size_hint_x=.17))
@@ -87,12 +93,51 @@ class MyActivitiesPage(GridLayout):
             row.add_widget(Label(text=time, size_hint_x=.17))
 
             row.add_widget(Label(text=str(activity['Distance']) + " mi", size_hint_x=.17))
-            self.activity_viewer.add_widget(row)
+            self.activity_viewer.body.add_widget(row)
 
     def filter(self):
         print("Filtering activities")
 
         keywords = self.search.keywords.text
+        print(keywords)
 
-    def filter_sport(self, text):
-        print(text)
+        new_list = []
+
+        for a in self.activity_list:
+            if keywords in a["Name"]:
+                new_list.append(a)
+
+        self.filtered_list = new_list
+        if len(self.filtered_list) < 10:
+            self.num_activities = len(self.filtered_list)
+        else:
+            self.num_activities = 10
+        self.show_activities()
+
+    def sport_filter(self, spinner, text):
+        print("Filtering by sport", text)
+        print(spinner)
+
+        new_list = []
+        translator = {
+            "All": "All",
+            "Run": "Run",
+            "Bike": "Ride",
+            "Swim": "Swim"
+        }
+        type = translator[text]
+        if type == "All":
+            self.filtered_list = self.activity_list
+            self.show_activities()
+            return 1
+        for a in self.activity_list:
+            if type == a["Type"]:
+                new_list.append(a)
+
+        self.filtered_list = new_list
+        if len(self.filtered_list) < 10:
+            self.num_activities = len(self.filtered_list)
+        else:
+            self.num_activities = 10
+        self.show_activities()
+
