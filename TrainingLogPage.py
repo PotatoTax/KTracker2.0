@@ -35,15 +35,37 @@ class TrainingLogPage(GridLayout):
         self.body.add_widget(self.body.head)
 
         for i in range(4):
-            self.body.add_widget(self.week_view())
+            self.body.add_widget(self.week_view(i))
         self.add_widget(self.body)
 
     def change_units(self, spinner, text):
         print(text)
 
-    def week_view(self):
+    def week_view(self, offset):
         week = GridLayout(cols=8, rows=1)
         week.add_widget(Label(text="Week Totals"))
-        for i in range(1, 8):
-            week.add_widget(Label(text="Day "+str(i)))
+        current_day = datetime.date.today().toordinal()
+        week_day = datetime.date.today().weekday()
+        week_start = datetime.date.fromordinal(current_day - week_day)
+        print(current_day, week_day, week_start)
+        for i in range(7):
+            day = []
+            for a in self.main_app.activity_data.activity_list:
+                if current_day - week_day + i - offset*7 == self.str_to_date(a):
+                    day.append(a)
+            print(day)
+            mileage = sum([a["Distance"] for a in day])
+            if mileage == 0:
+                if current_day - week_day + i - offset*7 == current_day:
+                    week.add_widget(Label(text="Today"))
+                elif current_day - week_day + i - offset*7 > current_day:
+                    week.add_widget(Label())
+                else:
+                    week.add_widget(Label(text="Rest"))
+            else:
+                week.add_widget(Label(text=str(round(mileage, 1))))
         return week
+
+    def str_to_date(self, a):
+        d = [int(x) for x in a["Date"].split()[0].split("-")]
+        return datetime.date.toordinal(datetime.date(d[0], d[1], d[2]))

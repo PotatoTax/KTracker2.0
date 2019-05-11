@@ -1,19 +1,16 @@
-import gspread
 import kivy
 from kivy.app import App
-from kivy.uix.gridlayout import GridLayout
-from kivy.uix.label import Label
 from kivy.uix.screenmanager import ScreenManager, Screen
 
-import SheetTools
-from LoginPage import LoginPage
-from SignupPage import SignupPage
-from HomePage import HomePage
-from MyActivitiesPage import MyActivitiesPage
-from TrainingLogPage import TrainingLogPage
-from PageParent import PageParent
-from HeaderWidget import Header
 from ActivityDataObject import ActivityData
+from HeaderWidget import Header
+from HomePage import HomePage
+from LoginPage import LoginPage
+from MyActivitiesPage import MyActivitiesPage
+from PageParent import PageParent
+from SignupPage import SignupPage
+from TrainingLogPage import TrainingLogPage
+
 kivy.require("1.10.1")
 
 
