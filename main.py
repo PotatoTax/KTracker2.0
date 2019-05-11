@@ -8,9 +8,11 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 import SheetTools
 from LoginPage import LoginPage
 from SignupPage import SignupPage
-import HomePage
-import MyActivitiesPage
-import TrainingLogPage
+from HomePage import HomePage
+from MyActivitiesPage import MyActivitiesPage
+from TrainingLogPage import TrainingLogPage
+from PageParent import PageParent
+from HeaderWidget import Header
 from ActivityDataObject import ActivityData
 kivy.require("1.10.1")
 
@@ -38,17 +40,17 @@ class KTrackerApp(App):
         return self.screen_manager
 
     def secondary_build(self):
-        self.home_page = HomePage.PageParent(self)
+        self.home_page = PageParent(self, Header, HomePage)
         screen = Screen(name="Home")
         screen.add_widget(self.home_page)
         self.screen_manager.add_widget(screen)
 
-        self.my_activities_page = MyActivitiesPage.PageParent(self)
+        self.my_activities_page = PageParent(self, Header, MyActivitiesPage)
         screen = Screen(name="My Activities")
         screen.add_widget(self.my_activities_page)
         self.screen_manager.add_widget(screen)
 
-        self.training_log_page = TrainingLogPage.PageParent(self)
+        self.training_log_page = PageParent(self, Header, TrainingLogPage)
         screen = Screen(name="Training Log")
         screen.add_widget(self.training_log_page)
         self.screen_manager.add_widget(screen)

@@ -4,18 +4,6 @@ from kivy.uix.label import Label
 from kivy.uix.spinner import Spinner
 from kivy.uix.textinput import TextInput
 
-from HeaderWidget import Header
-
-
-class PageParent(GridLayout):
-    def __init__(self, main_app, **kwargs):
-        super().__init__(**kwargs)
-        self.rows = 2
-        self.main_app = main_app
-        self.add_widget(Header(self.main_app, size_hint_y=.075))
-
-        self.add_widget(MyActivitiesPage(self.main_app))
-
 
 class MyActivitiesPage(GridLayout):
     def __init__(self, main_app, **kwargs):

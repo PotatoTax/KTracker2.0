@@ -3,18 +3,6 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
 from kivy.uix.screenmanager import ScreenManager, Screen
 
-from HeaderWidget import Header
-
-
-class PageParent(GridLayout):
-    def __init__(self, main_app, **kwargs):
-        super().__init__(**kwargs)
-        self.rows = 2
-        self.main_app = main_app
-        self.add_widget(Header(self.main_app, size_hint_y=.075))
-
-        self.add_widget(HomePage(self.main_app))
-
 
 class HomePage(GridLayout):
     def __init__(self, main_app, **kwargs):
@@ -44,7 +32,7 @@ class UserSummary(GridLayout):
         super().__init__(**kwargs)
         self.main_app = main_app
         self.rows = 4
-        self.ools = 1
+        self.cols = 1
 
         self.add_widget(Label(text="Current User"))
 
